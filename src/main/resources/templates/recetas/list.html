@@ -1,0 +1,25 @@
+<!-- templates/recetas/list.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recetas</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Incluir el navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mx-auto mt-10">
+        <h2 class="text-3xl font-bold mb-6">Todas las Recetas</h2>
+        <div class="grid grid-cols-3 gap-6">
+            <div th:each="receta : ${recetas}" class="card shadow-md p-4">
+                <img th:src="@{/img/recetas/{id}.jpg(id=${receta.id})}" alt="Imagen de la receta" class="w-full h-40 object-cover">
+                <h3 th:text="${receta.nombre}" class="text-xl font-semibold mt-4"></h3>
+                <p th:text="${#strings.abbreviate(receta.descripcion, 100)}" class="text-gray-600"></p>
+                <a th:href="@{/recetas/{id}(id=${receta.id})}" class="text-blue-500 hover:underline">Ver detalles</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

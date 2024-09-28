@@ -1,0 +1,21 @@
+<!-- templates/sobre-nosotros.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sobre Nosotros</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Incluir el navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mx-auto mt-10">
+        <h2 class="text-3xl font-bold mb-6">Sobre Nosotros</h2>
+        <p>
+            Somos apasionados de la gastronomía tradicional de nuestra comunidad. Nuestra misión es preservar y compartir las recetas ancestrales que forman parte de nuestra cultura e identidad.
+        </p>
+        <!-- Agrega información adicional como el equipo, historia, etc. -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!-- templates/recetas/detalle.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${receta.nombre}">Detalle de la Receta</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <!-- Incluir el navbar -->
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="container mx-auto mt-10">
+        <h2 th:text="${receta.nombre}" class="text-3xl font-bold mb-4"></h2>
+        <img th:src="@{/img/recetas/{id}.jpg(id=${receta.id})}" alt="Imagen de la receta" class="w-full h-64 object-cover mb-4">
+        <p th:text="${receta.descripcion}" class="mb-4"></p>
+        <h3 class="text-2xl font-semibold mb-2">Ingredientes</h3>
+        <ul class="list-disc ml-6 mb-4">
+            <li th:each="ingrediente : ${receta.ingredientes}" th:text="${ingrediente.nombre}"></li>
+        </ul>
+        <!-- Agrega más detalles como instrucciones, videos, etc. -->
+    </div>
+</body>
+</html>
