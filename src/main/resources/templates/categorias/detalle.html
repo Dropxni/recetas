@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Receta</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <header th:insert="fragments/navbar :: navbar"></header>
+
+    <!-- Detalle de la receta -->
+    <div class="container mx-auto p-6 mt-6">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h1 class="text-4xl font-bold mb-4" th:text="${receta.nombre}">Nombre de la receta</h1>
+            <p class="text-gray-700 text-lg mb-4" th:text="${receta.descripcion}">Descripción de la receta</p>
+            <div class="flex items-center mb-6">
+                <span class="bg-blue-500 text-white rounded-full px-3 py-1 text-sm font-semibold" th:text="${receta.dificultad}">Dificultad</span>
+                <span class="ml-4 text-gray-600" th:text="'Tiempo de preparación: ' + ${receta.tiempoPreparacion} + ' min'">Tiempo de preparación: 30 min</span>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-2">Ingredientes</h2>
+                <ul class="list-disc list-inside">
+                    <li th:each="ingrediente : ${receta.ingredientes}" th:text="${ingrediente.cantidad + ' ' + ingrediente.nombre}">
+                        Cantidad e Ingrediente
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mt-6">
+                <a href="/" class="bg-blue-500 text-white px-4 py-2 rounded">Volver a la lista</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

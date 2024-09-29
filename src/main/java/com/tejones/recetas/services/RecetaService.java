@@ -1,30 +1,16 @@
 package com.tejones.recetas.services;
 
 import com.tejones.recetas.models.Receta;
-import com.tejones.recetas.repositories.RecetaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-@Service
-public class RecetaService {
+public interface RecetaService {
 
-    @Autowired
-    private RecetaRepository recetaRepository;
+    List<Receta> listarRecetas();
 
-    public List<Receta> listarTodas() {
-        return recetaRepository.findAll();
-    }
+    void guardarReceta(Receta receta);
 
-    public Receta obtenerPorId(Long id) {
-        return recetaRepository.findById(id).orElse(null);
-    }
+    Receta obtenerRecetaPorId(Long id);
 
-    public Receta guardar(Receta receta) {
-        return recetaRepository.save(receta);
-    }
-
-    public void eliminar(Long id) {
-        recetaRepository.deleteById(id);
-    }
+    void eliminarReceta(Long id);
 }

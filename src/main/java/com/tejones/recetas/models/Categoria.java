@@ -1,19 +1,21 @@
 package com.tejones.recetas.models;
 
 import jakarta.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
-public class Categoria {
+@Table(name = "categorias")
+public class Categoria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 100)
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Receta> recetas;
+    @Column(nullable = true)
+    private String descripcion;
 
-    // Getters y Setters
+    // Getters and Setters
 }

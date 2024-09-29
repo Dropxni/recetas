@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
@@ -15,22 +16,63 @@ public class RecetasController {
     @Autowired
     private RecetaService recetaService;
 
+    // Redirigir a la lista de recetas cuando se accede a /recetas
     @GetMapping
-    public String listRecetas(Model model) {
-        List<Receta> recetas = recetaService.listarTodas();
+    public String redirigirALista() {
+        return "redirect:/recetas/list";
+    }
+
+    // Listar todas las recetas
+    @GetMapping("/list")
+    public String listarRecetas(Model model) {
+        List<Receta> recetas = recetaService.listarRecetas();
         model.addAttribute("recetas", recetas);
-        return "recetas/list";
+        return "recetas/list"; // Página donde se listan las recetas
     }
 
-    @GetMapping("/{id}")
-    public String detalleReceta(@PathVariable Long id, Model model) {
-        Receta receta = recetaService.obtenerPorId(id);
-        if (receta == null) {
-            return "redirect:/recetas";
-        }
+    // Mostrar el formulario para crear una nueva receta
+    @GetMapping("/nueva")
+    public String mostrarFormularioNuevaReceta(Model model) {
+        Receta receta = new Receta();
         model.addAttribute("receta", receta);
-        return "recetas/detalle";
+        return "recetas/form"; // Página donde se muestra el formulario
     }
 
-    // Métodos para crear, editar y eliminar recetas pueden agregarse aquí
+    // Guardar una nueva receta o actualizar una existente
+    @PostMapping("/guardar")
+    public String guardarReceta(@ModelAttribute("receta") Receta receta) {
+        recetaService.guardarReceta(receta);
+        return "redirect:/recetas/list";
+    }
+
+    // Mostrar el formulario para editar una receta existente
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditarReceta(@PathVariable("id") Long id, Model model) {
+        Receta receta = recetaService.obtenerRecetaPorId(id);
+        if (receta != null) {
+            model.addAttribute("receta", receta);
+            return "recetas/form"; // Reutiliza la misma vista para editar
+        } else {
+            return "redirect:/recetas/list";
+        }
+    }
+
+    // Eliminar una receta
+    @GetMapping("/eliminar/{id}")
+    public String eliminarReceta(@PathVariable("id") Long id) {
+        recetaService.eliminarReceta(id);
+        return "redirect:/recetas/list";
+    }
+
+    // Mostrar detalles de una receta
+    @GetMapping("/detalle/{id}")
+    public String verDetallesReceta(@PathVariable("id") Long id, Model model) {
+        Receta receta = recetaService.obtenerRecetaPorId(id);
+        if (receta != null) {
+            model.addAttribute("receta", receta);
+            return "recetas/detalle"; // Página para mostrar los detalles de la receta
+        } else {
+            return "redirect:/recetas/list";
+        }
+    }
 }

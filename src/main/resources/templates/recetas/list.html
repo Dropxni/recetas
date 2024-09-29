@@ -1,23 +1,36 @@
-<!-- templates/recetas/list.html -->
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Recetas</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Recetas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <!-- Incluir el navbar -->
-    <div th:replace="fragments/navbar :: navbar"></div>
+<body class="bg-gray-100">
+    <!-- Importar el Navbar -->
+    <header th:replace="fragments/navbar :: navbar"></header>
 
-    <div class="container mx-auto mt-10">
-        <h2 class="text-3xl font-bold mb-6">Todas las Recetas</h2>
-        <div class="grid grid-cols-3 gap-6">
-            <div th:each="receta : ${recetas}" class="card shadow-md p-4">
-                <img th:src="@{/img/recetas/{id}.jpg(id=${receta.id})}" alt="Imagen de la receta" class="w-full h-40 object-cover">
-                <h3 th:text="${receta.nombre}" class="text-xl font-semibold mt-4"></h3>
-                <p th:text="${#strings.abbreviate(receta.descripcion, 100)}" class="text-gray-600"></p>
-                <a th:href="@{/recetas/{id}(id=${receta.id})}" class="text-blue-500 hover:underline">Ver detalles</a>
+    <div class="container mx-auto mt-10 p-6">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Lista de Recetas</h1>
+        
+        <!-- Contenedor de cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Iterar sobre las recetas -->
+            <div th:each="receta : ${recetas}" class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <img src="/images/receta-placeholder.jpg" alt="Receta" class="w-full h-40 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800" th:text="${receta.nombre}"></h3>
+                    <p class="text-gray-600 mb-4" th:text="${receta.descripcion}"></p>
+                    <p class="text-sm text-gray-500">Dificultad: <span th:text="${receta.dificultad}"></span></p>
+                    
+                    <div class="mt-4 flex justify-between">
+                        <a class="text-blue-500 hover:underline" th:href="@{/recetas/detalle/{id}(id=${receta.id})}">Ver Detalles</a>
+                        <div class="flex space-x-2">
+                            <a class="text-green-500 hover:underline" th:href="@{/recetas/editar/{id}(id=${receta.id})}">Editar</a>
+                            <a class="text-red-500 hover:underline" th:href="@{/recetas/eliminar/{id}(id=${receta.id})}">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

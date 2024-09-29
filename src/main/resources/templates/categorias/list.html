@@ -1,23 +1,23 @@
-<!-- templates/categorias/list.html -->
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categorías</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Incluir el navbar -->
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <!-- Navbar -->
+    <header th:replace="fragments/navbar :: navbar"></header>
 
-    <div class="container mx-auto mt-10">
-        <h2 class="text-3xl font-bold mb-6">Categorías de Recetas</h2>
-        <div class="grid grid-cols-4 gap-6">
-            <div th:each="categoria : ${categorias}" class="card shadow-md p-4 text-center">
-                <h3 th:text="${categoria.nombre}" class="text-xl font-semibold mb-2"></h3>
-                <a th:href="@{/categorias/{id}/recetas(id=${categoria.id})}" class="text-blue-500 hover:underline">Ver recetas</a>
-            </div>
-        </div>
+    <!-- Lista de categorías -->
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-6">Categorías</h1>
+        <ul>
+            <li th:each="categoria : ${categorias}">
+                <a th:href="@{/categorias/{id}(id=${categoria.id})}" th:text="${categoria.nombre}" class="hover:text-blue-500"></a>
+            </li>
+        </ul>
     </div>
 </body>
 </html>
