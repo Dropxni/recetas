@@ -12,7 +12,7 @@ public class Receta {
     private Long id;
 
     private String nombre;
-    
+
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
@@ -20,7 +20,7 @@ public class Receta {
     private Dificultad dificultad;
 
     private int tiempoPreparacion; // En minutos
-    
+
     private int porciones; // Número de porciones (para cuántas personas)
 
     @Column(columnDefinition = "TEXT")
@@ -31,6 +31,9 @@ public class Receta {
 
     @Column(columnDefinition = "TEXT")
     private String informacionNutricional; // Información nutricional
+
+    @Column(length = 255)
+    private String imagenUrl; // URL de la imagen de la receta
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")
@@ -115,6 +118,14 @@ public class Receta {
 
     public void setInformacionNutricional(String informacionNutricional) {
         this.informacionNutricional = informacionNutricional;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 
     public Categoria getCategoria() {

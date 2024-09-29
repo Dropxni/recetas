@@ -17,7 +17,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <!-- Iterar sobre las recetas -->
             <div th:each="receta : ${recetas}" class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <img src="/images/receta-placeholder.jpg" alt="Receta" class="w-full h-40 object-cover">
+                <!-- Mostrar la imagen de la receta, si está disponible -->
+                <img th:src="${receta.imagenUrl != null ? receta.imagenUrl : 'https://via.placeholder.com/300'}" 
+                     alt="Receta" 
+                     class="w-full h-40 object-cover">
                 <div class="p-6">
                     <h3 class="text-xl font-semibold mb-2 text-gray-800" th:text="${receta.nombre}"></h3>
                     <p class="text-gray-600 mb-4" th:text="${receta.descripcion}"></p>

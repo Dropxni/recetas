@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -15,6 +20,9 @@ public class RecetasController {
 
     @Autowired
     private RecetaService recetaService;
+
+    // Ruta donde se guardarán las imágenes
+    private final String UPLOAD_DIR = System.getProperty("user.dir") + "/uploads/";
 
     // Redirigir a la lista de recetas cuando se accede a /recetas
     @GetMapping
@@ -38,9 +46,23 @@ public class RecetasController {
         return "recetas/form"; // Página donde se muestra el formulario
     }
 
-    // Guardar una nueva receta o actualizar una existente
+    // Guardar una nueva receta o actualizar una existente con imagen
     @PostMapping("/guardar")
-    public String guardarReceta(@ModelAttribute("receta") Receta receta) {
+    public String guardarReceta(@ModelAttribute("receta") Receta receta,
+                                @RequestParam("imagen") MultipartFile imagen) {
+        if (!imagen.isEmpty()) {
+            try {
+                // Guardar la imagen en el directorio de uploads
+                String imagenNombre = imagen.getOriginalFilename();
+                Path imagenPath = Paths.get(UPLOAD_DIR + imagenNombre);
+                Files.write(imagenPath, imagen.getBytes());
+
+                // Establecer la URL de la imagen en la receta
+                receta.setImagenUrl("/uploads/" + imagenNombre);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         recetaService.guardarReceta(receta);
         return "redirect:/recetas/list";
     }
