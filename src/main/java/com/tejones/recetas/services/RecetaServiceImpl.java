@@ -1,5 +1,6 @@
 package com.tejones.recetas.services;
 
+import com.tejones.recetas.models.Categoria;
 import com.tejones.recetas.models.Receta;
 import com.tejones.recetas.repositories.RecetaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class RecetaServiceImpl implements RecetaService {
     @Override
     public List<Receta> listarRecetas() {
         return recetaRepository.findAll();
+    }
+
+    @Override
+    public List<Receta> listarRecetasPorCategoria(Categoria categoria) {
+        return recetaRepository.findByCategoria(categoria); // Implementación del método añadido
     }
 
     @Override

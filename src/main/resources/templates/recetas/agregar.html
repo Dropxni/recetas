@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Receta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <header th:replace="fragments/navbar :: navbar"></header>
+
+    <div class="container mx-auto my-12 px-4">
+        <div class="bg-white shadow-xl rounded-lg p-6">
+            <h1 class="text-3xl font-bold mb-6">Agregar Nueva Receta</h1>
+            
+            <form th:action="@{/recetas/guardar}" method="post" enctype="multipart/form-data">
+                <!-- Nombre de la receta -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nombre">Nombre de la Receta</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                           type="text" id="nombre" name="nombre" placeholder="Nombre de la receta" th:value="${receta.nombre}">
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="descripcion">Descripción</label>
+                    <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                              id="descripcion" name="descripcion" placeholder="Descripción de la receta" th:text="${receta.descripcion}"></textarea>
+                </div>
+
+                <!-- Ingredientes -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Ingredientes</label>
+
+                    <!-- Sección para agregar dinámicamente ingredientes -->
+                    <div id="ingredientes-container">
+                        <div class="mb-2">
+                            <input type="text" name="ingredientes[0].nombre" placeholder="Ingrediente" class="shadow appearance-none border rounded py-2 px-3 mr-2">
+                            <input type="text" name="ingredientes[0].cantidad" placeholder="Cantidad" class="shadow appearance-none border rounded py-2 px-3">
+                        </div>
+                    </div>
+
+                    <!-- Botón para agregar más ingredientes -->
+                    <button type="button" id="agregar-ingrediente" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">Agregar Ingrediente</button>
+                </div>
+
+                <!-- Imagen -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="imagen">Imagen de la Receta</label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+                           type="file" id="imagen" name="imagen">
+                </div>
+
+                <!-- Botón de envío -->
+                <div class="flex items-center justify-between">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded" type="submit">Guardar Receta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let ingredienteIndex = 1;
+        document.getElementById('agregar-ingrediente').addEventListener('click', function() {
+            const container = document.getElementById('ingredientes-container');
+            const newIngrediente = `
+                <div class="mb-2">
+                    <input type="text" name="ingredientes[${ingredienteIndex}].nombre" placeholder="Ingrediente" class="shadow appearance-none border rounded py-2 px-3 mr-2">
+                    <input type="text" name="ingredientes[${ingredienteIndex}].cantidad" placeholder="Cantidad" class="shadow appearance-none border rounded py-2 px-3">
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', newIngrediente);
+            ingredienteIndex++;
+        });
+    </script>
+
+</body>
+</html>

@@ -1,20 +1,43 @@
-<!-- src/main/resources/templates/fragments/navbar.html -->
+<header th:fragment="navbar" class="bg-white shadow-md fixed w-full z-20 top-0 left-0">
+    <div class="container mx-auto flex flex-wrap items-center justify-between p-4">
+        <!-- Logo -->
+        <a href="/" class="flex items-center">
+            <img src="/img/logo.png" alt="Losto o Ma'y Logo" class="h-11 w-11">
+            <span class="ml-2 text-3xl font-bold text-gray-800">Losto o Ma'y</span>
+        </a>
 
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<body>
-    <nav th:fragment="navbar" class="bg-white shadow-md">
-        <div class="container mx-auto p-6 flex justify-between items-center">
-            <a href="/" class="text-2xl font-bold">Losto o Ma´y</a>
-            <ul class="flex space-x-4">
-                <li><a href="/" class="hover:text-blue-500">Inicio</a></li>
-                <li><a href="/recetas" class="hover:text-blue-500">Recetas</a></li>
-                <li><a href="/categorias" class="hover:text-blue-500">Categorías</a></li>
-                <li><a href="/sobre-nosotros" class="hover:text-blue-500">Sobre Nosotros</a></li>
-                <li><a href="/contacto" class="hover:text-blue-500">Contacto</a></li>
+        <!-- Botón de menú móvil -->
+        <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-controls="mobile-menu" aria-expanded="false">
+            <span class="sr-only">Abrir menú principal</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+
+        <!-- Menú -->
+        <nav class="hidden md:block w-full md:w-auto" id="mobile-menu">
+            <ul class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 text-gray-700">
+                <li><a href="/" class="block py-2 pr-4 pl-3 hover:text-blue-500 transition duration-300">Inicio</a></li>
+                <li><a href="/recetas" class="block py-2 pr-4 pl-3 hover:text-blue-500 transition duration-300">Recetas</a></li>
+                <li><a href="/categorias/list" class="block py-2 pr-4 pl-3 hover:text-blue-500 transition duration-300">Categorías</a></li>
+                <li><a href="/sobre-nosotros" class="block py-2 pr-4 pl-3 hover:text-blue-500 transition duration-300">Sobre Nosotros</a></li>
+                <li><a href="/contacto" class="block py-2 pr-4 pl-3 hover:text-blue-500 transition duration-300">Contacto</a></li>
             </ul>
-        </div>
-    </nav>
-    
-</body>
-</html>
+        </nav>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // Alternar visibilidad del menú móvil
+            menuToggle.addEventListener('click', function() {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
+</header>

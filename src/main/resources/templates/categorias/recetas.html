@@ -1,42 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recetas</title>
+    <title>Recetas de la Categoría</title>
+    
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
     <!-- Importar el Navbar -->
     <header th:replace="fragments/navbar :: navbar"></header>
 
-    <!-- Aumentar el margen superior para que el contenido no esté oculto por el navbar -->
-    <div class="container mx-auto mt-20 px-4"></div> <!-- Cambiado mt-10 a mt-32 -->
-        <!-- Cambiar el título a solo "Recetas" -->
-        <h1 class="text-4xl font-bold text-center mb-8">Recetas</h1>
+    <div class="container mx-auto mt-20 p-6">
+        <!-- Título con el nombre de la categoría -->
+        <h1 class="text-4xl font-bold mb-6 text-center text-gray-900">Recetas para <span th:text="${categoria.nombre}">Nombre de la Categoría</span></h1>
         
         <!-- Contenedor de cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <!-- Iterar sobre las recetas -->
+            <!-- Iterar sobre las recetas de la categoría -->
             <div th:each="receta : ${recetas}" class="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl">
-                <!-- Mostrar la imagen de la receta, si está disponible -->
+                <!-- Imagen de la receta -->
                 <img th:src="${receta.imagenUrl != null ? receta.imagenUrl : 'https://via.placeholder.com/300'}" 
                      alt="Receta" 
-                     class="w-full h-36 object-cover"> <!-- Hacemos la imagen más pequeña -->
+                     class="w-full h-36 object-cover"> <!-- Imagen con altura fija -->
                 <div class="p-4 flex-1">
-                    <h3 class="text-lg font-semibold mb-2 text-gray-800" th:text="${receta.nombre}"></h3> <!-- Texto más pequeño -->
-                    <p class="text-gray-600 mb-2 text-sm" th:text="${receta.descripcion}"></p> <!-- Descripción más pequeña -->
+                    <!-- Nombre de la receta -->
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800" th:text="${receta.nombre}"></h3> 
+                    <!-- Descripción de la receta -->
+                    <p class="text-gray-600 mb-2 text-sm" th:text="${receta.descripcion}"></p>
+                    <!-- Dificultad de la receta -->
                     <p class="text-xs text-gray-500 mb-4">Dificultad: <span th:text="${receta.dificultad}"></span></p>
                 </div>
+                <!-- Contenedor de botones (Ver Detalles, Editar, Eliminar) -->
                 <div class="p-4 bg-gray-50 mt-auto">
                     <div class="flex justify-between items-center">
+                        <!-- Botón Ver Detalles -->
                         <a class="text-blue-500 hover:text-blue-700 text-sm font-semibold transition-colors" th:href="@{/recetas/detalle/{id}(id=${receta.id})}">
                             Ver Detalles
                         </a>
                         <div class="flex space-x-3">
+                            <!-- Botón Editar -->
                             <a class="text-green-500 hover:text-green-700 text-sm font-semibold transition-colors" th:href="@{/recetas/editar/{id}(id=${receta.id})}">
                                 Editar
                             </a>
+                            <!-- Botón Eliminar -->
                             <a class="text-red-500 hover:text-red-700 text-sm font-semibold transition-colors" th:href="@{/recetas/eliminar/{id}(id=${receta.id})}">
                                 Eliminar
                             </a>
@@ -48,3 +56,4 @@
     </div>
 </body>
 </html>
+

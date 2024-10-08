@@ -1,23 +1,162 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorías</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <!-- Navbar -->
+    <title>Lista de Categorías</title>
+
+    <!-- Importar el Navbar -->
     <header th:replace="fragments/navbar :: navbar"></header>
 
-    <!-- Lista de categorías -->
-    <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-6">Categorías</h1>
-        <ul>
-            <li th:each="categoria : ${categorias}">
-                <a th:href="@{/categorias/{id}(id=${categoria.id})}" th:text="${categoria.nombre}" class="hover:text-blue-500"></a>
-            </li>
-        </ul>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <style>
+        /* Ajustes personalizados para el carrusel */
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Estilo para las cards con tamaño fijo */
+        .card {
+            width: 100%;
+            height: 450px; /* Aumenté ligeramente el tamaño */
+            max-width: 350px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column; /* Flexbox para alinear los elementos */
+            justify-content: space-between; /* Espacio entre la descripción y el botón */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ajustar imagen para que se adapte al tamaño de la card */
+        .card img {
+            width: 100%;
+            height: 250px; /* Hacer la imagen más grande */
+            object-fit: cover; /* Asegura que la imagen se ajuste sin distorsión */
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .card .content {
+            padding: 16px;
+            flex: 1; /* Flex para que la descripción tome el espacio necesario */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Mantiene el botón alineado abajo */
+            text-align: center;
+        }
+
+        /* Estilo para el botón bonito */
+        .card .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1D4ED8; /* Azul oscuro */
+            color: white;
+            border-radius: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .card .btn:hover {
+            background-color: #3B82F6; /* Azul más claro */
+            transform: scale(1.05); /* Aumentar ligeramente el tamaño del botón al hacer hover */
+        }
+
+        .swiper-button-next, .swiper-button-prev {
+            color: #000;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Contenido principal -->
+    <div class="container mx-auto mt-20 px-4">
+        <h1 class="text-4xl font-bold text-center mb-8">Categorías</h1>
+
+        <!-- Carrusel Swiper -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- Iteramos sobre las categorías -->
+                <div class="swiper-slide" th:each="categoria : ${categorias}">
+                    <div class="card bg-white">
+                        <!-- Imagen de categoría obtenida desde imagen_url en la base de datos -->
+                        <img th:src="${categoria.imagenUrl != null ? categoria.imagenUrl : '/img/categoria-placeholder.jpg'}" 
+                             alt="Imagen de categoría">
+                        <div class="content">
+                            <!-- Enlace para ver las recetas de esta categoría -->
+                            <a th:href="@{/categorias/{id}/recetas(id=${categoria.id})}"
+                               class="block text-xl font-bold text-blue-500 hover:text-blue-700 transition duration-300"
+                               th:text="${categoria.nombre}">
+                                Nombre Categoría
+                            </a>
+                            <!-- Descripción de la categoría -->
+                            <p class="text-gray-700 text-base mt-2" th:text="${categoria.descripcion}">
+                                Descripción de la categoría.
+                            </p>
+                            <!-- Botón de Ver más -->
+                            <a th:href="@{/categorias/{id}/recetas(id=${categoria.id})}" class="btn mt-4">
+                                Ver más
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de navegación -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
     </div>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <script>
+        // Inicializar Swiper con auto-slide y tamaño uniforme de las cards
+        const swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true, // Hacer el carrusel infinito
+            autoplay: {
+                delay: 3000, // Retraso de 3 segundos entre cada slide
+                disableOnInteraction: false, // Continuar el auto-slide incluso después de la interacción
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                },
+                1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 40,
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>

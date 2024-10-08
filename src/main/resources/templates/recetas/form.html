@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar/Editar Receta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <header th:replace="fragments/navbar :: navbar"></header>
+
+    <div class="container mx-auto my-12 px-4">
+        <div class="bg-white shadow-xl rounded-lg p-6">
+            <h1 class="text-3xl font-bold mb-4" th:text="${#strings.isEmpty(receta.id) ? 'Agregar Receta' : 'Editar Receta'}"></h1>
+
+            <form action="#" th:action="@{/recetas/guardar}" th:object="${receta}" method="post">
+
+                <!-- Nombre -->
+                <div class="mb-4">
+                    <label for="nombre" class="block text-gray-700">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" th:value="${receta.nombre}" placeholder="Nombre de la receta" class="mt-1 block w-full p-2 border rounded">
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-4">
+                    <label for="descripcion" class="block text-gray-700">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" th:text="${receta.descripcion}" placeholder="Descripción de la receta" class="mt-1 block w-full p-2 border rounded"></textarea>
+                </div>
+
+                <!-- Dificultad -->
+                <div class="mb-4">
+                    <label for="dificultad" class="block text-gray-700">Dificultad</label>
+                    <select id="dificultad" name="dificultad" class="mt-1 block w-full p-2 border rounded">
+                        <option value="Fácil" th:selected="${receta.dificultad == 'FÁCIL'}">Fácil</option>
+                        <option value="Intermedia" th:selected="${receta.dificultad == 'INTERMEDIA'}">Intermedia</option>
+                        <option value="Difícil" th:selected="${receta.dificultad == 'DIFÍCIL'}">Difícil</option>
+                    </select>
+                </div>
+
+                <!-- Tiempo de preparación -->
+                <div class="mb-4">
+                    <label for="tiempoPreparacion" class="block text-gray-700">Tiempo de Preparación (minutos)</label>
+                    <input type="number" id="tiempoPreparacion" name="tiempoPreparacion" th:value="${receta.tiempoPreparacion}" placeholder="120" class="mt-1 block w-full p-2 border rounded">
+                </div>
+
+                <!-- Porciones -->
+                <div class="mb-4">
+                    <label for="porciones" class="block text-gray-700">Porciones</label>
+                    <input type="number" id="porciones" name="porciones" th:value="${receta.porciones}" placeholder="4" class="mt-1 block w-full p-2 border rounded">
+                </div>
+
+                <!-- Utensilios -->
+                <div class="mb-4">
+                    <label for="utensilios" class="block text-gray-700">Utensilios</label>
+                    <textarea id="utensilios" name="utensilios" th:text="${receta.utensilios}" placeholder="Lista de utensilios" class="mt-1 block w-full p-2 border rounded"></textarea>
+                </div>
+
+                <!-- Ingredientes y Cantidades -->
+                <div class="mb-4">
+                    <label class="block text-gray-700">Ingredientes</label>
+                    <div th:each="recetaIngrediente, iterStat : ${receta.ingredientes}">
+                        <div class="grid grid-cols-2 gap-4 mb-2">
+                            <!-- Ingrediente Seleccionado -->
+                            <select name="ingredienteIds" class="block w-full p-2 border rounded">
+                                <option th:each="ing : ${ingredientesDisponibles}" th:value="${ing.id}" th:text="${ing.nombre}" th:selected="${ing.id == recetaIngrediente.ingrediente.id}"></option>
+                            </select>
+                            <!-- Cantidad -->
+                            <input type="text" name="cantidades" placeholder="Cantidad" th:value="${recetaIngrediente.cantidad}" class="block w-full p-2 border rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Procedimiento -->
+                <div class="mb-4">
+                    <label for="procedimiento" class="block text-gray-700">Procedimiento</label>
+                    <textarea id="procedimiento" name="procedimiento" th:text="${receta.procedimiento}" placeholder="1. Paso 1. 2. Paso 2. ..." class="mt-1 block w-full p-2 border rounded"></textarea>
+                </div>
+
+                <!-- Información Nutricional -->
+                <div class="mb-4">
+                    <label for="informacionNutricional" class="block text-gray-700">Información Nutricional</label>
+                    <textarea id="informacionNutricional" name="informacionNutricional" th:text="${receta.informacionNutricional}" placeholder="Calorías, proteínas, grasas, etc." class="mt-1 block w-full p-2 border rounded"></textarea>
+                </div>
+
+                <!-- Imagen URL -->
+                <div class="mb-4">
+                    <label for="imagenUrl" class="block text-gray-700">URL de Imagen</label>
+                    <input type="text" id="imagenUrl" name="imagenUrl" th:value="${receta.imagenUrl}" placeholder="https://example.com/image.jpg" class="mt-1 block w-full p-2 border rounded">
+                </div>
+
+                <!-- Botón Guardar -->
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg">Guardar Receta</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

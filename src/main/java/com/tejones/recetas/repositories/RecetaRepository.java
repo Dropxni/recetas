@@ -1,10 +1,11 @@
 package com.tejones.recetas.repositories;
 
 import com.tejones.recetas.models.Receta;
+import com.tejones.recetas.models.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
 public interface RecetaRepository extends JpaRepository<Receta, Long> {
-}
 
+    List<Receta> findByCategoria(Categoria categoria); // Método que buscará recetas por categoría
+}
